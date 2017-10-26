@@ -13,24 +13,43 @@
                 color:#333;
                 padding: 50px;
                 position:relative;
-            }
-            .boxes {
-                background: #666;
                 display: flex;
+                flex-wrap: wrap;
+            }
+            .useless {
+                width: 50px;
+                height: 50px;
+                background: rgb(46, 46, 46);
+                margin:2px;
             }
         </style>
     </head>
     <body>
-        <div id="banner">
-        <h1>Welcome!</h1>
-            <button id="normal-dom">
-                Start Normal DOM
-            </button>
-        </div>
-        <br/>
-        <div id="contents" class="contents">
+        <br>
+        <div class="contents" id="contents">
 
         </div>
-        <script src="http://localhost:9000/main.bundle.js"></script>
+        <script src="/dist/m3.dist.js"></script>
+        <script>
+            console.time('run');
+            let q = new m3();
+            q.enqueue({
+                read: function(scope) {
+                    scope.content = document.getElementById("contents");
+                    scope.frag = document.createDocumentFragment();
+                },
+                manip: function(scope) {
+                    let div;
+                    for (let i = 0; i < 500; i++) {
+                        div = document.createElement('div');
+                        div.classList.add('useless');
+                        scope.frag.appendChild(div);
+                    }
+                    scope.content.appendChild(scope.frag);
+                }
+            });
+            q.run();
+            console.timeEnd('run');
+        </script>
     </body>
 </html>

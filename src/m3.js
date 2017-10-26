@@ -5,19 +5,8 @@
  */
 
 import { mo } from 'Utility/merge';
-import { hash } from 'Utility/hash';
 
 /**
- * Scheduler using standard setTimeout function
- * @private
- * @param {function} cb 
- */
-function sched(cb) {
-    return window.setTimeout(cb, m3.conf.tickRate);
-}
-
-/**
- * @private
  * @default
  */
 const defaults = {
@@ -25,33 +14,44 @@ const defaults = {
 };
 
 /**
+ * Scheduler using standard setTimeout function
+ * @private
+ * @param {function} cb 
+ */
+function sched(cb) {
+    return window.setTimeout(cb, defaults.tickRate);
+}
+
+function exec(cb, _cb) {
+    const self = this;
+    cb.call(null, self.scope);
+    sched(_cb.bind(null, self.scope));
+}
+
+/**
  * Default constructor
  * @param {object} obj 
  */
 let m3 = function (obj) {
     this.conf = mo.deep(defaults, obj);
+    this.instance = [];
+    this.scope = Object.create(null);
 };
 
-// Instance queue
-m3.prototype.instance = [];
-
-// Counter is used to help generate a unique ID
-// Will never descrease
-m3.prototype.counter = 0;
 
 /**
  * @public
  */
 m3.prototype.run = function() {
     const self = this;
-    let curr, cb, args;
+    let curr, cb, _cb;
     while (curr = self.instance.shift()) {
-        cb = curr.callback;
-        args = curr.argv;
+        cb = curr.read;
+        _cb = curr.manip;
         try {
-            sched(cb.bind(null, args));
+            sched(exec.bind(self, cb, _cb));
         } catch (err) {
-            console.error('Unable to execute function ' + curr.name, err);
+            console.error('Unable to execute function', err);
         }
     }
     return self;
@@ -72,24 +72,19 @@ m3.prototype.clear = function () {
  * @param {array} args Array of arguments
  * @param {string} name [optional] Name of the function
  */
-m3.prototype.enqueue = function (fn, args, name) {
+m3.prototype.enqueue = function (obj) {
     const self = this;
-    if (!fn) {
+    if (!obj) {
         return self;
     }
-
-    do {
-        _o = Object.create(null);
-        _o.name = name ? name : 'm' + self.counter;
-        _o.hashId = hash.randomHash(_o.name);
-        _o.callback = typeof fn === 'function' ? fn : null;
-        _o.argv = args ? args : null;
-    } while (false);
-
-    if (self.instance.filter(x => x.hashId === _o.hashId).length == 0) {
-        self.instance.push(_o);
-        self.counter++;
+    if (obj.callback === void 0) {
+        if (obj.read === void 0 || obj.manip === void 0) {
+            throw new Error("One or two functions callback are missing. Unable to add to queue");
+        }
     }
+
+    self.instance.push(obj);
+
     return self;
 }
 
@@ -103,3 +98,6 @@ m3.prototype.dequeue = function () {
         console.error('Queue is empty. Unable to de-queue');
     return this;
 }
+
+
+module.exports = m3;

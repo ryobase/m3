@@ -12,8 +12,8 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, './dist'),
-        library: "M3",
-        libraryTarget: "umd",
+        library: "m3",
+        libraryTarget: "var",
         filename: 'm3.dist.js'
     },
     module: {
@@ -32,7 +32,6 @@ module.exports = {
             }
         ]
     },
-    target: "web",
     stats: {
         colors: true
     }

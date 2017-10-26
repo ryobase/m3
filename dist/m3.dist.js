@@ -1,1 +1,247 @@
-!function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=e():"function"==typeof define&&define.amd?define([],e):"object"==typeof exports?exports.M3=e():t.M3=e()}(this,function(){return function(t){function e(n){if(o[n])return o[n].exports;var r=o[n]={i:n,l:!1,exports:{}};return t[n].call(r.exports,r,r.exports,e),r.l=!0,r.exports}var o={};return e.m=t,e.c=o,e.d=function(t,o,n){e.o(t,o)||Object.defineProperty(t,o,{configurable:!1,enumerable:!0,get:n})},e.n=function(t){var o=t&&t.__esModule?function(){return t.default}:function(){return t};return e.d(o,"a",o),o},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=0)}([function(t,e,o){"use strict";function n(t){return window.setTimeout(t,u.conf.tickRate)}var r=o(1),c=o(2),i={tickRate:15.625},u=function(t){this.conf=r.mo.deep(i,t)};u.prototype.instance=[],u.prototype.counter=0,u.prototype.run=function(){for(var t=this,e=void 0,o=void 0,r=void 0;e=t.instance.shift();){o=e.callback,r=e.argv;try{n(o.bind(null,r))}catch(t){console.error("Unable to execute function "+e.name,t)}}return t},u.prototype.clear=function(){for(var t=this;t.instance.length>1;)t.instance.pop();return t},u.prototype.enqueue=function(t,e,o){var n=this;return t?(_o=Object.create(null),_o.name=o||"m"+n.counter,_o.hashId=c.hash.randomHash(_o.name),_o.callback="function"==typeof t?t:null,_o.argv=e||null,0==n.instance.filter(function(t){return t.hashId===_o.hashId}).length&&(n.instance.push(_o),n.counter++),n):n},u.prototype.dequeue=function(){return this.instance.length>1?this.instance.shift():console.error("Queue is empty. Unable to de-queue"),this}},function(t,e,o){"use strict";function n(t,e){var o=function(t){Object.keys(t).forEach(function(e,o){Object.prototype.hasOwnProperty.call(t,e)&&(c(t[e])?n[e]=i.deep(n[e],t[e]):n[e]=t[e])})},n=c(t)?Object.assign({},t):{},r=void 0;if(arguments.length>2)r=Array.from(arguments);else if(!e)return t;if(r)for(;r.length>0;)o(r.shift());else o(e);return n}Object.defineProperty(e,"__esModule",{value:!0});var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},c=function(t){return r(!!t)&&"object"===t&&"[object RegExp]"!==Object.prototype.toString.call(t)&&"[object Date]"!==Object.prototype.toString.call(t)},i=e.mo={isObj:c,deep:n}},function(t,e,o){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var n=function(t,e){return t<<e|t>>>32-e},r=function(t,e,o,n){switch(t){case 0:return e&o|~e&o;case 1:return e^o^n;case 2:return e&o|e&n|o&n;case 3:return e^o^n}return 0};e.hash={randomHash:function(t){var e=[2882400001,826366246,655894552,271733878],o=void 0,c=[],i=void 0,u=void 0,a=void 0,f=void 0,s=void 0,l=void 0;t=t?t.toString():(new Date).getTime().toString();var p=Math.ceil(t.length/4);for(s=0;s<p;s++)for(c[s]=[],l=0;l<16;l++)c[s][l]=t.charCodeAt(s+4*l)<<24|t.charCodeAt(s+4*l+1)<<16|t.charCodeAt(s+4*l+2)<<8|t.charCodeAt(s+4*l+3)<<0;for(c[p-1][15]=Math.floor(8*(t.length-1)/Math.pow(2,32)),s=0;s<p;s++){for(o=[],l=0;l<16;l++)o[l]=c[s][l];for(l=16;l<80;l++)o[l]=n(o[l-3]^o[l-8]^o[l-14]^o[l],1);for(i=e[0],u=e[1],a=e[2],f=e[3],l=0;l<80;l++){var h=Math.floor(l/20),d=n(i,5)+r(h,i,u,a)+o[l]+e[h];i=a,u=n(u,30),a=f,f=d}e[0]=e[0]+i>>>0,e[1]=e[1]+u>>>0,e[2]=e[2]+a>>>0,e[3]=e[3]+f>>>0}for(s=0;s<e.length;s++)e[s]=("00000000"+e[s].toString(16)).slice(-8);return e.join("")}}}])});
+var m3 =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _merge = __webpack_require__(1);
+
+/**
+ * @default
+ */
+var defaults = {
+    tickRate: 1 / 64 * 1000
+};
+
+/**
+ * Scheduler using standard setTimeout function
+ * @private
+ * @param {function} cb 
+ */
+/**
+ * @module M3
+ * @description A simple libarry to queue and perform DOM all at once.
+ * @author Moss Pakhapoca
+ */
+
+function sched(cb) {
+    return window.setTimeout(cb, defaults.tickRate);
+}
+
+function exec(cb, _cb) {
+    var self = this;
+    cb.call(null, self.scope);
+    sched(_cb.bind(null, self.scope));
+}
+
+/**
+ * Default constructor
+ * @param {object} obj 
+ */
+var m3 = function m3(obj) {
+    this.conf = _merge.mo.deep(defaults, obj);
+    this.instance = [];
+    this.scope = Object.create(null);
+};
+
+/**
+ * @public
+ */
+m3.prototype.run = function () {
+    var self = this;
+    var curr = void 0,
+        cb = void 0,
+        _cb = void 0;
+    while (curr = self.instance.shift()) {
+        cb = curr.read;
+        _cb = curr.manip;
+        try {
+            sched(exec.bind(self, cb, _cb));
+        } catch (err) {
+            console.error('Unable to execute function', err);
+        }
+    }
+    return self;
+};
+
+/**
+ * @public
+ */
+m3.prototype.clear = function () {
+    var self = this;
+    while (self.instance.length > 1) {
+        self.instance.pop();
+    }return self;
+};
+
+/**
+ * @public
+ * @param {array} args Array of arguments
+ * @param {string} name [optional] Name of the function
+ */
+m3.prototype.enqueue = function (obj) {
+    var self = this;
+    if (!obj) {
+        return self;
+    }
+    if (obj.callback === void 0) {
+        if (obj.read === void 0 || obj.manip === void 0) {
+            throw new Error("One or two functions callback are missing. Unable to add to queue");
+        }
+    }
+
+    self.instance.push(obj);
+
+    return self;
+};
+
+/**
+ * @public
+ */
+m3.prototype.dequeue = function () {
+    if (this.instance.length > 1) this.instance.shift();else console.error('Queue is empty. Unable to de-queue');
+    return this;
+};
+
+module.exports = m3;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/**
+ * @module mo
+ * @desc A library for merging Javascript objects.
+ * @author Moss Pakhapoca
+ */
+
+/**
+ * 
+ */
+var isObj = function isObj(a) {
+    return _typeof(!!a) && a === 'object' && Object.prototype.toString.call(a) !== '[object RegExp]' && Object.prototype.toString.call(a) !== '[object Date]';
+};
+
+/**
+ * @private
+ * @param {*} a 
+ * @return {boolean}
+ */
+var isEmpty = function isEmpty(a) {
+    return Array.isArray(a) ? [] : {};
+};
+
+/**
+ * @public
+ * @param {object} o1 
+ * @param {object} o2 
+ * @return {object}
+ */
+function deep(o1, o2) {
+    // Deep copy objects, does not merge array
+    var _m = function _m(o) {
+        Object.keys(o).forEach(function (key, i) {
+            if (Object.prototype.hasOwnProperty.call(o, key)) {
+                if (isObj(o[key])) out[key] = mo.deep(out[key], o[key]);else out[key] = o[key];
+            }
+        });
+    };
+    var out = isObj(o1) ? Object.assign({}, o1) : {};
+    var _oa = void 0,
+        i = 0;
+    if (arguments.length > 2) {
+        _oa = Array.from(arguments);
+    } else if (!o2) return o1;
+    if (_oa) {
+        while (_oa.length > 0) {
+            _m(_oa.shift());
+        }
+    } else {
+        _m(o2);
+    }
+    return out;
+}
+
+var mo = exports.mo = {
+    isObj: isObj,
+    deep: deep
+};
+
+/***/ })
+/******/ ]);
